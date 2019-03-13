@@ -82,6 +82,13 @@ class FavoriteFragment : Fragment() {
                 val id = favoriteEventsRecyclerAdapter.getPos(event.id)
                 favoriteEventViewModel.setFavorite(event.id, !isFavorite)
                 event.favorite = !event.favorite
+                Snackbar.make(favoriteCoordinatorLayout,
+                    getString(R.string.removed_from_liked, event.name), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.undo)) {
+                        favoriteEventViewModel.setFavorite(event.id, isFavorite)
+                        event.favorite = !event.favorite
+                        favoriteEventsRecyclerAdapter.notifyItemChanged(id)
+                    }.show()
                 favoriteEventsRecyclerAdapter.notifyItemChanged(id)
                 showEmptyMessage(favoriteEventsRecyclerAdapter.itemCount)
             }
